@@ -367,10 +367,14 @@ try{
 
         // 4. Sor hozzáadása a táblázathoz:
         // TODO: a három érték helyére a fent kiszámítottak kerüljenek (változók)
+        if(termekekSzama<100){
         termekekModel.addRow(new Object[]{nev, beszerzesiAr, eladasiAr});
 
         //Beírás az adatbázisba
         adatok.writeRow(nev, beszerzesiAr);
+        }else{
+             JOptionPane.showMessageDialog(rootPane,"Megtelt az adatbázis! Törölj sorokat!");
+        }
         } catch (java.lang.NumberFormatException e) {
              JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
         }
