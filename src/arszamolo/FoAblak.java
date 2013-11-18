@@ -17,7 +17,7 @@ public class FoAblak extends javax.swing.JFrame {
     // Globális változók:
     Termek[] termekek = new Termek[100];
     int termekekSzama = 0;
-    
+
     Adatbazis adatok = new Adatbazis();
 
     DefaultTableModel termekekModel;
@@ -30,22 +30,26 @@ public class FoAblak extends javax.swing.JFrame {
 
         termekekModel = (DefaultTableModel) tblTermekek.getModel();
         tblTermekek.setModel(termekekModel);
-        
-        System.arraycopy( adatok.readAllRecords(), 0, termekek, 0, adatok.getTermekekSzama() );
-        
+
+        System.arraycopy(adatok.readAllRecords(), 0, termekek, 0, adatok.getTermekekSzama());
+
         //Listázás (db-ből olvasott)
         termekekSzama = adatok.getTermekekSzama();
-        int arres = Integer.parseInt(tfArres.getText());
-        termekekModel.setRowCount(0);
-        for (int i = 0; i < termekekSzama; i++) {
+        try {
 
-            int beszerzesiAr = termekek[i].getBeszerzesiAr();
-            float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
-            
-            //tblTermekek.removeAll();
-             termekekModel.addRow(new Object[]{termekek[i].getTermekNev(),termekek[i].getBeszerzesiAr(),eladasiAr});
-            
+            int arres = Integer.parseInt(tfArres.getText());
+            termekekModel.setRowCount(0);
+            for (int i = 0; i < termekekSzama; i++) {
 
+                int beszerzesiAr = termekek[i].getBeszerzesiAr();
+                float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
+
+                //tblTermekek.removeAll();
+                termekekModel.addRow(new Object[]{termekek[i].getTermekNev(), termekek[i].getBeszerzesiAr(), eladasiAr});
+
+            }
+        } catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
         }
     }
 
@@ -266,41 +270,43 @@ public class FoAblak extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRendezesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRendezesActionPerformed
-        for(int i=termekekSzama;i>1;i--){
-             for(int j=0;j<i-1;j++){
-                 int compare = termekek[j].getTermekNev().compareTo(termekek[j+1].getTermekNev());
-                 if(compare>0){
-                     Termek cs = termekek[j];
-                    termekek[j] = termekek[j+1];
-                    termekek[j+1] = cs;
-                 }
-             }
-         }
-        
-        /*for (int i=0; i<=termekekSzama-2; i++) {
-            for (int j=i+1; j<=termekekSzama-1; j++) {
-                int compare = termekek[i].getTermekNev().compareTo(termekek[j].getTermekNev());
-                if (compare>0) {
-                    Termek cs = termekek[i];
-                    termekek[i] = termekek[j];
-                    termekek[j] = cs;
+        try{
+        for (int i = termekekSzama; i > 1; i--) {
+            for (int j = 0; j < i - 1; j++) {
+                int compare = termekek[j].getTermekNev().compareTo(termekek[j + 1].getTermekNev());
+                if (compare > 0) {
+                    Termek cs = termekek[j];
+                    termekek[j] = termekek[j + 1];
+                    termekek[j + 1] = cs;
                 }
             }
-        }*/
+        }
+
+        /*for (int i=0; i<=termekekSzama-2; i++) {
+         for (int j=i+1; j<=termekekSzama-1; j++) {
+         int compare = termekek[i].getTermekNev().compareTo(termekek[j].getTermekNev());
+         if (compare>0) {
+         Termek cs = termekek[i];
+         termekek[i] = termekek[j];
+         termekek[j] = cs;
+         }
+         }
+         }*/
         int arres = Integer.parseInt(tfArres.getText());
         termekekModel.setRowCount(0);
         for (int i = 0; i < termekekSzama; i++) {
 
             int beszerzesiAr = termekek[i].getBeszerzesiAr();
             float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
-            
+
             //tblTermekek.removeAll();
-             termekekModel.addRow(new Object[]{termekek[i].getTermekNev(),termekek[i].getBeszerzesiAr(),eladasiAr});
-            
+            termekekModel.addRow(new Object[]{termekek[i].getTermekNev(), termekek[i].getBeszerzesiAr(), eladasiAr});
 
         }
-       
-        
+} catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
+        }
+
     }//GEN-LAST:event_btnRendezesActionPerformed
 
     private void btnLegolcsobbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLegolcsobbActionPerformed
@@ -328,23 +334,25 @@ public class FoAblak extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLegdragabbActionPerformed
 
     private void btnAtlagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtlagActionPerformed
-      float atlag = 0;
-      int arres = Integer.parseInt(tfArres.getText());
-      
-            
-      
+        try{
+        float atlag = 0;
+        int arres = Integer.parseInt(tfArres.getText());
 
         for (int i = 1; i < termekekSzama; i++) {
             int beszerzesiAr = termekek[i].getBeszerzesiAr();
             float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
-           atlag += eladasiAr;
+            atlag += eladasiAr;
         }
-        atlag = atlag/termekekSzama;
-        JOptionPane.showMessageDialog(this,"Átlag termékár: "+atlag);
+        atlag = atlag / termekekSzama;
+        JOptionPane.showMessageDialog(this, "Átlag termékár: " + atlag);
+        } catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
+        }
     }//GEN-LAST:event_btnAtlagActionPerformed
 
     private void btnFelvitelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFelvitelActionPerformed
-        // 1. Adatok kiolvasása a beviteli mezőkből (2db) és elhelyezésük változókban:
+try{        
+// 1. Adatok kiolvasása a beviteli mezőkből (2db) és elhelyezésük változókban:
         String nev = tfTermekNeve.getText();
         int beszerzesiAr = Integer.parseInt(tfBeszerzesiAr.getText());
 
@@ -360,14 +368,18 @@ public class FoAblak extends javax.swing.JFrame {
         // 4. Sor hozzáadása a táblázathoz:
         // TODO: a három érték helyére a fent kiszámítottak kerüljenek (változók)
         termekekModel.addRow(new Object[]{nev, beszerzesiAr, eladasiAr});
-        
+
         //Beírás az adatbázisba
         adatok.writeRow(nev, beszerzesiAr);
-        
+        } catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
+        }
+
     }//GEN-LAST:event_btnFelvitelActionPerformed
 
     private void btnArresModositasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArresModositasaActionPerformed
-        // TODO: Táblázat újrarajzolása a termekek globális tömb és az új
+try{        
+// TODO: Táblázat újrarajzolása a termekek globális tömb és az új
         // árrés érték segítségével:
         int arres = Integer.parseInt(tfArres.getText());
         for (int i = 0; i < termekekSzama; i++) {
@@ -379,48 +391,50 @@ public class FoAblak extends javax.swing.JFrame {
             termekekModel.setValueAt(eladasiAr, i, 2);
 
         }
-
+} catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
+        }
 
     }//GEN-LAST:event_btnArresModositasaActionPerformed
 
     private void btnTorolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTorolActionPerformed
-    int torlendo = tblTermekek.getSelectedRow();
-    //Törlés az adatbázisból
-    adatok.deleRow(termekek[torlendo].getTermekNev());
-     //JOptionPane.showMessageDialog(this,torlendo);
-    Termek[] termekek_uj = new Termek[100];
-    int j=0;
-    for (int i = 0; i < termekekSzama; i++) {
-        if(i!=torlendo){
-            termekek_uj[j]=termekek[i];
-            j++;
+        try{
+        int torlendo = tblTermekek.getSelectedRow();
+        //Törlés az adatbázisból
+        adatok.deleRow(termekek[torlendo].getTermekNev());
+        //JOptionPane.showMessageDialog(this,torlendo);
+        Termek[] termekek_uj = new Termek[100];
+        int j = 0;
+        for (int i = 0; i < termekekSzama; i++) {
+            if (i != torlendo) {
+                termekek_uj[j] = termekek[i];
+                j++;
+            }
         }
-    }
-    //JOptionPane.showMessageDialog(this,j);
-    Arrays.fill(termekek, null);
-    
-    System.arraycopy( termekek_uj, 0, termekek, 0, j );
-    
-   
-    termekekSzama = j;
-    
-    /*TEST LIST*/
-    int arres = Integer.parseInt(tfArres.getText());
+        //JOptionPane.showMessageDialog(this,j);
+        Arrays.fill(termekek, null);
+
+        System.arraycopy(termekek_uj, 0, termekek, 0, j);
+
+        termekekSzama = j;
+
+        /*TEST LIST*/
+        int arres = Integer.parseInt(tfArres.getText());
         termekekModel.setRowCount(0);
         for (int i = 0; i < termekekSzama; i++) {
 
             int beszerzesiAr = termekek[i].getBeszerzesiAr();
             float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
-            
+
             //tblTermekek.removeAll();
-             termekekModel.addRow(new Object[]{termekek[i].getTermekNev(),termekek[i].getBeszerzesiAr(),eladasiAr});
-            
+            termekekModel.addRow(new Object[]{termekek[i].getTermekNev(), termekek[i].getBeszerzesiAr(), eladasiAr});
 
         }
-    
+
     //termekekModel.removeRow(torlendo);
-   
-    
+} catch (java.lang.NumberFormatException e) {
+             JOptionPane.showMessageDialog(rootPane,"Csak számokat írhatsz be!");
+        }
     }//GEN-LAST:event_btnTorolActionPerformed
 
     /**
