@@ -17,6 +17,8 @@ public class FoAblak extends javax.swing.JFrame {
     // Globális változók:
     Termek[] termekek = new Termek[100];
     int termekekSzama = 0;
+    
+    Adatbazis adatok = new Adatbazis();
 
     DefaultTableModel termekekModel;
 
@@ -28,7 +30,23 @@ public class FoAblak extends javax.swing.JFrame {
 
         termekekModel = (DefaultTableModel) tblTermekek.getModel();
         tblTermekek.setModel(termekekModel);
+        
+        System.arraycopy( adatok.readAllRecords(), 0, termekek, 0, adatok.getTermekekSzama() );
+        
+        //Listázás (db-ből olvasott)
+        termekekSzama = adatok.getTermekekSzama();
+        int arres = Integer.parseInt(tfArres.getText());
+        termekekModel.setRowCount(0);
+        for (int i = 0; i < termekekSzama; i++) {
 
+            int beszerzesiAr = termekek[i].getBeszerzesiAr();
+            float eladasiAr = beszerzesiAr + beszerzesiAr * ((float) arres / 100);
+            
+            //tblTermekek.removeAll();
+             termekekModel.addRow(new Object[]{termekek[i].getTermekNev(),termekek[i].getBeszerzesiAr(),eladasiAr});
+            
+
+        }
     }
 
     /**
@@ -342,6 +360,10 @@ public class FoAblak extends javax.swing.JFrame {
         // 4. Sor hozzáadása a táblázathoz:
         // TODO: a három érték helyére a fent kiszámítottak kerüljenek (változók)
         termekekModel.addRow(new Object[]{nev, beszerzesiAr, eladasiAr});
+        
+        //Beírás az adatbázisba
+        adatok.writeRow(nev, beszerzesiAr);
+        
     }//GEN-LAST:event_btnFelvitelActionPerformed
 
     private void btnArresModositasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArresModositasaActionPerformed
@@ -363,6 +385,8 @@ public class FoAblak extends javax.swing.JFrame {
 
     private void btnTorolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTorolActionPerformed
     int torlendo = tblTermekek.getSelectedRow();
+    //Törlés az adatbázisból
+    adatok.deleRow(termekek[torlendo].getTermekNev());
      //JOptionPane.showMessageDialog(this,torlendo);
     Termek[] termekek_uj = new Termek[100];
     int j=0;
