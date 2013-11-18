@@ -1,0 +1,35 @@
+Fekadat: Ár számoló
+~~~~~~~~~~~~~~~~~~~
+
+Készítsünk egy grafikus Java alkalmazást, ami bekéri és táblázatban tárolja
+az általunk árult áruk nevét és beszerzési árát!
+
+A táblázat harmadik oszlopában jelenjen meg a kiszámított eladási ár. Az árrés
+mértékét egy beviteli mező tartalmazza. Ha a beviteli mező tartalma megváltozik,
+az Árrés módosítása gombra kattintva számolja újra a program a táblázatban már
+megjelent eladási árakat!
+
+A táblázatot csak adatmegjelentítésre használjuk, nem adattárolásra!!!
+Ezért egy Termek osztály típusú elemeket tartalmazó globális tömbben tároljuk az
+adatokat. (megkegyzés: nem a legjobb megoldás, valójában szerencsés lenne még
+egy osztály elkészítése ami magát a tömböt tartalmazza és a következőkben
+leírt számításokat tartalmazó függvényeket)
+
+További számítások:
+(Mindegyikhez tartoozik egy-egy nyomógomb a felületen. A rendezés újrarajzolja
+a táblázatot, míg a többi művelet egy felugró ablakban jeleníti meg a kiszámított
+értékeket. A legolcsóbb termék gomb kódja egy sor kivételével meg van írva.)
+
+- Rendezés termék neve szerint: rendezi a termekek globális tömböt, majd
+újrarajzolja a táblázatot
+- Legolcsóbb termék
+- Legdrágább termék
+- Átlag termékár: eladási árakkal számolva!
+
+
+Plusz feladatok:
+1. Törölni is lehessen a táblázatban aktuálisan kijelölt sort!
+(mind a globális tömbből, mind a táblázatból törölni kell!!) 
+2. A program induláskor egy adatbázisból töltse be a korábban velvitt sorokat,
+valamint a módosítások szerint mentse is az adatokat az adatbázisba
+  
